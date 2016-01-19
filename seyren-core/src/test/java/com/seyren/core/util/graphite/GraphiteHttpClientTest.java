@@ -86,7 +86,7 @@ public class GraphiteHttpClientTest {
                         .withParam("target", "service.error.count"),
                 giveResponse(response, "application/json"));
 
-        JsonNode node = graphiteHttpClient.getTargetJson("service.error.count", "-5minutes", "now");
+        JsonNode node = graphiteHttpClient.getTargetJson("service.error.count");
 
         assertThat(node, is(MAPPER.readTree(response)));
     }

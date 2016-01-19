@@ -42,6 +42,7 @@ public class Subscription {
     private LocalTime fromTime;
     private LocalTime toTime;
     private boolean enabled;
+    private MessageType messageType;
 
     public String getId() {
         return id;
@@ -265,6 +266,19 @@ public class Subscription {
 
     public Subscription withEnabled(boolean enabled) {
         setEnabled(enabled);
+        return this;
+    }
+
+    public MessageType getMessageType() {
+        return messageType;
+    }
+
+    public void setMessageType(MessageType messageType) {
+        this.messageType = messageType;
+    }
+
+    public Subscription withMessageType(MessageType messageType) {
+        setMessageType(messageType);
         return this;
     }
 

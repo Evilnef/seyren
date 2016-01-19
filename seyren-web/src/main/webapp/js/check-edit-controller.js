@@ -7,6 +7,7 @@
             name: null,
             description: null,
             target: null,
+            pollingInterval: 60000,
             warn: null,
             error: null,
             previewImage: "./img/preview-nodata.png",

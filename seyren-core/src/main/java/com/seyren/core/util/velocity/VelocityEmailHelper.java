@@ -62,11 +62,13 @@ public class VelocityEmailHelper implements EmailHelper {
     
     public String createSubject(Check check, Subscription subscription, List<Alert> alerts) {
         return evaluateTemplate(check, subscription, alerts, TEMPLATE_SUBJECT_CONTENT);
+        //return evaluateTemplate(check, subscription, alerts, getTemplateAsString(subscription.getMessageType().getPathToTemplate()));
     }
 
     @Override
     public String createBody(Check check, Subscription subscription, List<Alert> alerts) {
-        return evaluateTemplate(check, subscription, alerts, TEMPLATE_CONTENT);
+        //return evaluateTemplate(check, subscription, alerts, TEMPLATE_CONTENT);
+        return evaluateTemplate(check, subscription, alerts, getTemplateAsString(subscription.getMessageType().getPathToTemplate()));
     }
 
     private String evaluateTemplate(Check check, Subscription subscription, List<Alert> alerts, String templateContent) {

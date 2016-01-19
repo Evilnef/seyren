@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.base.Strings;
+import com.seyren.core.domain.*;
 import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
@@ -28,11 +29,6 @@ import org.joda.time.LocalTime;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-import com.seyren.core.domain.Alert;
-import com.seyren.core.domain.AlertType;
-import com.seyren.core.domain.Check;
-import com.seyren.core.domain.Subscription;
-import com.seyren.core.domain.SubscriptionType;
 
 public class MongoMapper {
 
@@ -41,8 +37,7 @@ public class MongoMapper {
         String name = getString(dbo, "name");
         String description = getString(dbo, "description");
         String target = getString(dbo, "target");
-        String from = Strings.emptyToNull(getString(dbo, "from"));
-        String until = Strings.emptyToNull(getString(dbo, "until"));
+        BigDecimal pollingInterval = getBigDecimal(dbo, "pollingInterval");
         BigDecimal warn = getBigDecimal(dbo, "warn");
         BigDecimal error = getBigDecimal(dbo, "error");
         boolean enabled = getBoolean(dbo, "enabled");
@@ -60,8 +55,6 @@ public class MongoMapper {
                 .withName(name)
                 .withDescription(description)
                 .withTarget(target)
-                .withFrom(from)
-                .withUntil(until)
                 .withWarn(warn)
                 .withError(error)
                 .withEnabled(enabled)
@@ -69,7 +62,8 @@ public class MongoMapper {
                 .withAllowNoData(allowNoData)
                 .withState(state)
                 .withLastCheck(lastCheck)
-                .withSubscriptions(subscriptions);
+                .withSubscriptions(subscriptions)
+                .withPollingInterval(pollingInterval);
     }
 
     public Subscription subscriptionFrom(DBObject dbo) {
@@ -90,6 +84,7 @@ public class MongoMapper {
         LocalTime toTime = getLocalTime(dbo, "toHour", "toMin");
         boolean enabled = getBoolean(dbo, "enabled");
         BigDecimal hitsToNotify = getBigDecimal(dbo, "hitsToNotify");
+        MessageType messageType = getMessageType(getString(dbo, "messageType"));
 
         return new Subscription()
                 .withId(id)
@@ -108,7 +103,8 @@ public class MongoMapper {
                 .withFromTime(fromTime)
                 .withToTime(toTime)
                 .withEnabled(enabled)
-                .withHitsToNotify(hitsToNotify);
+                .withHitsToNotify(hitsToNotify)
+                .withMessageType(messageType);
     }
 
     public Alert alertFrom(DBObject dbo) {
@@ -155,8 +151,9 @@ public class MongoMapper {
         map.put("name", check.getName());
         map.put("description", check.getDescription());
         map.put("target", check.getTarget());
-        map.put("from", check.getFrom());
-        map.put("until", check.getUntil());
+        if (check.getPollingInterval() != null) {
+            map.put("pollingInterval", check.getPollingInterval().toPlainString());
+        }
         if (check.getWarn() != null) {
             map.put("warn", check.getWarn().toPlainString());
         }
@@ -213,6 +210,7 @@ public class MongoMapper {
             map.put("toMin", subscription.getToTime().getMinuteOfHour());
         }
         map.put("enabled", subscription.isEnabled());
+        map.put("messageType", subscription.getMessageType().name());
         return map;
     }
 
@@ -295,4 +293,7 @@ public class MongoMapper {
         return value == null ? null : SubscriptionType.valueOf(value);
     }
 
+    private MessageType getMessageType(String value) {
+        return value == null ? null : MessageType.valueOf(value);
+    }
 }

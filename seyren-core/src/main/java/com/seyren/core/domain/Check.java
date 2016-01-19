@@ -41,8 +41,6 @@ public class Check {
     private String name;
     private String description;
     private String target;
-    private String from;
-    private String until;
     private BigDecimal warn;
     private BigDecimal error;
     private boolean enabled;
@@ -51,6 +49,7 @@ public class Check {
     private AlertType state;
     private DateTime lastCheck;
     private List<Subscription> subscriptions = new ArrayList<Subscription>();
+    private BigDecimal pollingInterval;
     
     public String getId() {
         return id;
@@ -97,32 +96,6 @@ public class Check {
     
     public void setTarget(String target) {
         this.target = target;
-    }
-
-    public String getFrom() {
-        return from;
-    }
-
-    public void setFrom(String from) {
-        this.from = from;
-    }
-
-    public Check withFrom(String from) {
-        setFrom(from);
-        return this;
-    }
-
-    public String getUntil() {
-        return until;
-    }
-
-    public void setUntil(String until) {
-        this.until = until;
-    }
-
-    public Check withUntil(String until) {
-        setUntil(until);
-        return this;
     }
 
     public Check withTarget(String target) {
@@ -236,6 +209,19 @@ public class Check {
     
     public Check withSubscriptions(List<Subscription> subscriptions) {
         setSubscriptions(subscriptions);
+        return this;
+    }
+
+    public BigDecimal getPollingInterval() {
+        return pollingInterval;
+    }
+
+    public void setPollingInterval(BigDecimal pollingInterval) {
+        this.pollingInterval = pollingInterval;
+    }
+
+    public Check withPollingInterval(BigDecimal pollingInterval) {
+        setPollingInterval(pollingInterval);
         return this;
     }
 }

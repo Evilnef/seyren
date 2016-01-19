@@ -7,6 +7,7 @@
             target: null,
             hitsToNotify: 1,
             type: "EMAIL",
+            messageType: "DEFAULT",
             ignoreWarn: false,
             ignoreError: false,
             ignoreOk: false,

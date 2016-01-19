@@ -1,0 +1,49 @@
+<html>
+<head>
+    <style type="text/css">
+        table {
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 0.5em;
+        }
+
+        tr.OK {
+            background-color: #468847;
+            color: black;
+        }
+
+        tr.WARN {
+            background-color: #f89406;
+            color: black;
+        }
+
+        tr.ERROR {
+            background-color: #b94a48;
+            color: black;
+        }
+
+        tr.UNKNOWN {
+            background-color: #999999;
+            color: black;
+        }
+
+        tr.EXCEPTION {
+            background-color: #333333;
+            color: white;
+        }
+
+        th, td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+<p>License server became available from</p>
+    #foreach ($ALERT in $ALERTS)
+    <p>$ALERT.Timestamp.toString("yyyy-MM-dd HH:mm:ss")</p>
+    #end
+    <p><a href="http://stats/dashboard/db/license-server?panelId=1&fullscreen&theme=light">Chart</a></p>
+</body>
+</html>
