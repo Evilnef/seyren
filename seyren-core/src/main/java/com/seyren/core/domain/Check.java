@@ -50,7 +50,10 @@ public class Check {
     private DateTime lastCheck;
     private List<Subscription> subscriptions = new ArrayList<Subscription>();
     private BigDecimal pollingInterval;
-    
+    private String requestPath;
+    private String requestParams;
+    private CheckType checkType;
+
     public String getId() {
         return id;
     }
@@ -133,6 +136,21 @@ public class Check {
         return this;
     }
 
+    @JsonSerialize(using = BigDecimalSerializer.class)
+    public BigDecimal getPollingInterval() {
+        return pollingInterval;
+    }
+
+    @JsonDeserialize(using = BigDecimalDeserializer.class)
+    public void setPollingInterval(BigDecimal pollingInterval) {
+        this.pollingInterval = pollingInterval;
+    }
+
+    public Check withPollingInterval(BigDecimal pollingInterval) {
+        setPollingInterval(pollingInterval);
+        return this;
+    }
+
     public boolean isEnabled() {
         return enabled;
     }
@@ -184,7 +202,7 @@ public class Check {
     public DateTime getLastCheck() {
         return lastCheck;
     }
-    
+
     public void setLastCheck(DateTime lastCheck) {
         this.lastCheck = lastCheck;
     }
@@ -212,16 +230,42 @@ public class Check {
         return this;
     }
 
-    public BigDecimal getPollingInterval() {
-        return pollingInterval;
+    public String getRequestPath() {
+        return requestPath;
     }
 
-    public void setPollingInterval(BigDecimal pollingInterval) {
-        this.pollingInterval = pollingInterval;
+    public void setRequestPath(String requestPath) {
+        this.requestPath = requestPath;
     }
 
-    public Check withPollingInterval(BigDecimal pollingInterval) {
-        setPollingInterval(pollingInterval);
+    public Check withRequestPath(String requestPath) {
+        setRequestPath(requestPath);
+        return this;
+    }
+
+    public String getRequestParams() {
+        return requestParams;
+    }
+
+    public void setRequestParams(String requestParams) {
+        this.requestParams = requestParams;
+    }
+
+    public Check withRequestParams(String requestParams) {
+        setRequestParams(requestParams);
+        return this;
+    }
+
+    public CheckType getCheckType() {
+        return checkType;
+    }
+
+    public void setCheckType(CheckType checkType) {
+        this.checkType = checkType;
+    }
+
+    public Check withCheckType(CheckType checkType) {
+        setCheckType(checkType);
         return this;
     }
 }

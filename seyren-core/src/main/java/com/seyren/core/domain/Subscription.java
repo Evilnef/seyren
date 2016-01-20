@@ -43,6 +43,7 @@ public class Subscription {
     private LocalTime toTime;
     private boolean enabled;
     private MessageType messageType;
+    private String templateId;
 
     public String getId() {
         return id;
@@ -279,6 +280,19 @@ public class Subscription {
 
     public Subscription withMessageType(MessageType messageType) {
         setMessageType(messageType);
+        return this;
+    }
+
+    public String getTemplateId() {
+        return templateId;
+    }
+
+    public void setTemplateId(String templateId) {
+        this.templateId = templateId;
+    }
+
+    public Subscription withTemplateId(String templateId) {
+        setTemplateId(templateId);
         return this;
     }
 

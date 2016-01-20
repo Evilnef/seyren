@@ -43,11 +43,12 @@
                 </div>
                 <div ng-class="{ 'form-group': true, 'has-error': checkSubscription['subscription.messageType'].$invalid }">
                     <label class="col-sm-3 control-label" for="subscription.messageType">Message type</label>
-                    <div class="col-sm-4">
+                    <div class="col-sm-7">
                         <select id="subscription.messageType" class="form-control" name="subscription.messageType" ng-model="subscription.messageType">
                             <option value="DEFAULT">Default</option>
                             <option value="LICENCE_SERVER_UNAVAILABLE">LICENCE_SERVER_UNAVAILABLE</option>
                             <option value="LICENCE_SERVER_AVAILABLE">LICENCE_SERVER_AVAILABLE</option>
+                            <option value="LICENCE_SERVER_PERFORMANCE_DEGRADATION">LICENCE_SERVER_PERFORMANCE_DEGRADATION</option>
                         </select>
                     </div>
                 </div>

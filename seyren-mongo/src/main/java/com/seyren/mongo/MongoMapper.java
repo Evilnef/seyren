@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.google.common.base.Strings;
 import com.seyren.core.domain.*;
@@ -37,6 +38,8 @@ public class MongoMapper {
         String name = getString(dbo, "name");
         String description = getString(dbo, "description");
         String target = getString(dbo, "target");
+        String requestPath = getString(dbo, "requestPath");
+        String requestParams = getString(dbo, "requestParams");
         BigDecimal pollingInterval = getBigDecimal(dbo, "pollingInterval");
         BigDecimal warn = getBigDecimal(dbo, "warn");
         BigDecimal error = getBigDecimal(dbo, "error");
@@ -47,9 +50,8 @@ public class MongoMapper {
         DateTime lastCheck = getDateTime(dbo, "lastCheck");
         List<Subscription> subscriptions = new ArrayList<Subscription>();
         BasicDBList list = getBasicDBList(dbo, "subscriptions");
-        for (Object o : list) {
-            subscriptions.add(subscriptionFrom((DBObject) o));
-        }
+        CheckType checkType = CheckType.valueOf(getString(dbo, "checkType"));
+        subscriptions.addAll(list.stream().map(o -> subscriptionFrom((DBObject) o)).collect(Collectors.toList()));
 
         return new Check().withId(id)
                 .withName(name)
@@ -63,7 +65,10 @@ public class MongoMapper {
                 .withState(state)
                 .withLastCheck(lastCheck)
                 .withSubscriptions(subscriptions)
-                .withPollingInterval(pollingInterval);
+                .withPollingInterval(pollingInterval)
+                .withRequestPath(requestPath)
+                .withRequestParams(requestParams)
+                .withCheckType(checkType);
     }
 
     public Subscription subscriptionFrom(DBObject dbo) {
@@ -85,6 +90,7 @@ public class MongoMapper {
         boolean enabled = getBoolean(dbo, "enabled");
         BigDecimal hitsToNotify = getBigDecimal(dbo, "hitsToNotify");
         MessageType messageType = getMessageType(getString(dbo, "messageType"));
+        String templateId = getString(dbo, "templateId");
 
         return new Subscription()
                 .withId(id)
@@ -104,7 +110,8 @@ public class MongoMapper {
                 .withToTime(toTime)
                 .withEnabled(enabled)
                 .withHitsToNotify(hitsToNotify)
-                .withMessageType(messageType);
+                .withMessageType(messageType)
+                .withTemplateId(templateId);
     }
 
     public Alert alertFrom(DBObject dbo) {
@@ -132,6 +139,17 @@ public class MongoMapper {
                 .withStreak(streak);
     }
 
+    public Template templateFrom(DBObject dbo) {
+        String id = dbo.get("_id").toString();
+        String name = dbo.get("name").toString();
+        String content = dbo.get("content").toString();
+
+        return new Template()
+                .withId(id)
+                .withName(name)
+                .withContent(content);
+    }
+
     public DBObject checkToDBObject(Check check) {
         return new BasicDBObject(propertiesToMap(check));
     }
@@ -144,6 +162,10 @@ public class MongoMapper {
         return new BasicDBObject(propertiesToMap(alert));
     }
 
+    public DBObject templateToDBObject(Template template) {
+        return new BasicDBObject(propertiesToMap(template));
+    }
+
     @SuppressWarnings({"unchecked", "rawtypes"})
     private Map propertiesToMap(Check check) {
         Map map = new HashMap();
@@ -151,6 +173,11 @@ public class MongoMapper {
         map.put("name", check.getName());
         map.put("description", check.getDescription());
         map.put("target", check.getTarget());
+        map.put("requestPath", check.getRequestPath());
+        map.put("requestParams", check.getRequestParams());
+        if (check.getCheckType() == null)
+            check.setCheckType(CheckType.Graphite);
+        map.put("checkType", check.getCheckType().toString());
         if (check.getPollingInterval() != null) {
             map.put("pollingInterval", check.getPollingInterval().toPlainString());
         }
@@ -211,6 +238,7 @@ public class MongoMapper {
         }
         map.put("enabled", subscription.isEnabled());
         map.put("messageType", subscription.getMessageType().name());
+        map.put("templateId", subscription.getTemplateId());
         return map;
     }
 
@@ -236,6 +264,15 @@ public class MongoMapper {
         map.put("fromType", alert.getFromType().toString());
         map.put("toType", alert.getToType().toString());
         map.put("timestamp", new Date(alert.getTimestamp().getMillis()));
+        return map;
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private Map propertiesToMap(Template template) {
+        Map map = new HashMap<>();
+        map.put("_id", template.getId());
+        map.put("name", template.getName());
+        map.put("content", template.getContent());
         return map;
     }
 

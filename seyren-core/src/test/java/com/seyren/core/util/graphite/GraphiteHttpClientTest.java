@@ -68,7 +68,7 @@ public class GraphiteHttpClientTest {
                         .withParam("target", "service.error.1MinuteRate"),
                 giveResponse(response, "application/json"));
 
-        JsonNode node = graphiteHttpClient.getTargetJson("service.error.1MinuteRate");
+        JsonNode node = graphiteHttpClient.getTargetJson("service.error.1MinuteRate", null, null);
 
         assertThat(node, is(MAPPER.readTree(response)));
     }
@@ -86,7 +86,7 @@ public class GraphiteHttpClientTest {
                         .withParam("target", "service.error.count"),
                 giveResponse(response, "application/json"));
 
-        JsonNode node = graphiteHttpClient.getTargetJson("service.error.count");
+        JsonNode node = graphiteHttpClient.getTargetJson("service.error.count", null, null);
 
         assertThat(node, is(MAPPER.readTree(response)));
     }
@@ -96,7 +96,7 @@ public class GraphiteHttpClientTest {
         thrown.expect(GraphiteReadException.class);
         
         graphiteHttpClient = new GraphiteHttpClient(seyrenConfig("http://unknown"));
-        graphiteHttpClient.getTargetJson("service.*.1MinuteRate");
+        graphiteHttpClient.getTargetJson("service.*.1MinuteRate", null, null);
     }
     
     @Test
@@ -117,7 +117,7 @@ public class GraphiteHttpClientTest {
                         .withHeader("Authorization", "Basic c2V5cmVuOnMzeXIzTg=="),
                 giveResponse(response, "application/json"));
         
-        graphiteHttpClient.getTargetJson("service.error.1MinuteRate");
+        graphiteHttpClient.getTargetJson("service.error.1MinuteRate", null, null);
         
         System.clearProperty("GRAPHITE_USERNAME");
         System.clearProperty("GRAPHITE_PASSWORD");

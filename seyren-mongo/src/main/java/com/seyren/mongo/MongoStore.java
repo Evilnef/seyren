@@ -24,7 +24,8 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.google.common.base.Strings;
+import com.seyren.core.domain.*;
+import com.seyren.core.store.TemplatesStore;
 import org.apache.commons.lang.Validate;
 import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
@@ -42,11 +43,6 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.MongoException;
 import com.mongodb.WriteConcern;
-import com.seyren.core.domain.Alert;
-import com.seyren.core.domain.AlertType;
-import com.seyren.core.domain.Check;
-import com.seyren.core.domain.SeyrenResponse;
-import com.seyren.core.domain.Subscription;
 import com.seyren.core.store.AlertsStore;
 import com.seyren.core.store.ChecksStore;
 import com.seyren.core.store.SubscriptionsStore;
@@ -54,7 +50,7 @@ import com.seyren.core.util.config.SeyrenConfig;
 import com.seyren.core.util.hashing.TargetHash;
 
 @Named
-public class MongoStore implements ChecksStore, AlertsStore, SubscriptionsStore {
+public class MongoStore implements ChecksStore, AlertsStore, SubscriptionsStore, TemplatesStore {
     
     private static final Logger LOGGER = LoggerFactory.getLogger(MongoStore.class);
     
@@ -97,6 +93,8 @@ public class MongoStore implements ChecksStore, AlertsStore, SubscriptionsStore 
         getChecksCollection().createIndex(new BasicDBObject("enabled", 1).append("live", 1));
         getAlertsCollection().createIndex(new BasicDBObject("timestamp", -1));
         getAlertsCollection().createIndex(new BasicDBObject("checkId", 1).append("targetHash", 1));
+
+        getTemplateCollection().createIndex(new BasicDBObject("name", 1), new BasicDBObject("unique", true));
     }
 
     private void removeOldIndices() {
@@ -132,6 +130,10 @@ public class MongoStore implements ChecksStore, AlertsStore, SubscriptionsStore 
     
     private DBCollection getAlertsCollection() {
         return mongo.getCollection("alerts");
+    }
+
+    private DBCollection getTemplateCollection() {
+        return mongo.getCollection("templates");
     }
 
     protected SeyrenResponse executeQueryAndCollectResponse(DBObject query) {
@@ -240,6 +242,7 @@ public class MongoStore implements ChecksStore, AlertsStore, SubscriptionsStore 
                 .with("target", check.getTarget())
                 .with("warn", check.getWarn().toPlainString())
                 .with("error", check.getError().toPlainString())
+                .with("pollingInterval", check.getPollingInterval().toPlainString())
                 .with("enabled", check.isEnabled())
                 .with("live", check.isLive())
                 .with("allowNoData", check.isAllowNoData())
@@ -293,7 +296,7 @@ public class MongoStore implements ChecksStore, AlertsStore, SubscriptionsStore 
     @Override
     public SeyrenResponse<Alert> getAlerts(int start, int items) {
         DBCursor dbc = getAlertsCollection().find().sort(object("timestamp", -1)).skip(start).limit(items);
-        List<Alert> alerts = new ArrayList<Alert>();
+        List<Alert> alerts = new ArrayList<>();
         while (dbc.hasNext()) {
             alerts.add(mapper.alertFrom(dbc.next()));
         }
@@ -354,5 +357,37 @@ public class MongoStore implements ChecksStore, AlertsStore, SubscriptionsStore 
         DBObject updateObject = object("$set", object("subscriptions.$", subscriptionObject));
         getChecksCollection().update(checkFindObject, updateObject);
     }
-    
+
+    @Override
+    public Template createTemplate(Template template) {
+        template.setId(ObjectId.get().toString());
+        getTemplateCollection().insert(mapper.templateToDBObject(template));
+        return template;
+    }
+
+    @Override
+    public void deleteTemplate(String id) {
+        getTemplateCollection().remove(forId(id));
+    }
+
+    @Override
+    public SeyrenResponse<Template> getTemplates() {
+        DBCursor dbc = getTemplateCollection().find();
+        List<Template> templates = new ArrayList<>();
+        while (dbc.hasNext()) {
+            templates.add(mapper.templateFrom(dbc.next()));
+        }
+        dbc.close();
+        return new SeyrenResponse<Template>()
+                .withValues(templates)
+                .withTotal(dbc.count());
+    }
+
+    @Override
+    public Template getTemplate(String templateId) {
+        DBObject dbo = getTemplateCollection().findOne(object("_id", templateId));
+        if (dbo == null)
+            return null;
+        return mapper.templateFrom(dbo);
+    }
 }

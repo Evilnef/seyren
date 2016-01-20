@@ -49,12 +49,7 @@ public class ChecksBean implements ChecksResource {
             checks = checksStore.getChecksByState(states, enabled);
         } else if (fields != null && !fields.isEmpty() &&
                 regexes != null && !regexes.isEmpty()) {
-            List<Pattern> patterns = Lists.transform(regexes, new Function<String, Pattern>() {
-                @Override
-                public Pattern apply(String regex) {
-                    return Pattern.compile(regex);
-                }
-            });
+            List<Pattern> patterns = Lists.transform(regexes, Pattern::compile);
 
             checks = checksStore.getChecksByPattern(fields, patterns, enabled);
         } else {

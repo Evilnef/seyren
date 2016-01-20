@@ -57,7 +57,13 @@ public class CheckRunner implements Runnable {
 
     @Override
     public final void run() {
-        long timeSinceLastCheck = DateTime.now().minus(check.getLastCheck().getMillis()).getMillis();
+        long timeSinceLastCheck;
+        if (check.getLastCheck() == null) {
+            timeSinceLastCheck = check.getPollingInterval().longValue();
+        }
+        else {
+            timeSinceLastCheck = DateTime.now().minus(check.getLastCheck().getMillis()).getMillis();
+        }
         if (!check.isEnabled()
                 || timeSinceLastCheck < check.getPollingInterval().longValue()) {
             return;
