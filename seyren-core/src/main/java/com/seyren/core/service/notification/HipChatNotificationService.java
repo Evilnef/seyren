@@ -19,6 +19,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.seyren.core.domain.*;
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -27,11 +29,6 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.slf4j.LoggerFactory;
 
-import com.seyren.core.domain.Alert;
-import com.seyren.core.domain.AlertType;
-import com.seyren.core.domain.Check;
-import com.seyren.core.domain.Subscription;
-import com.seyren.core.domain.SubscriptionType;
 import com.seyren.core.exception.NotificationFailedException;
 import com.seyren.core.util.config.SeyrenConfig;
 
@@ -76,7 +73,12 @@ public class HipChatNotificationService implements NotificationService {
             throw new NotificationFailedException("Failed to send notification to HipChat", e);
         }
     }
-    
+
+    @Override
+    public void sendNotification(Check check, Subscription subscription, Template template, List<Alert> alerts) throws NotificationFailedException {
+        throw new NotImplementedException();
+    }
+
     private String getHipChatMessage(Check check) {
         String message = "Check <a href=" + seyrenConfig.getBaseUrl() + "/#/checks/" + check.getId() + ">" + check.getName() + "</a> has entered its " + check.getState().toString() + " state.";
         return message;

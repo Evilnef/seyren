@@ -22,6 +22,8 @@ import java.util.Locale;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.seyren.core.domain.*;
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -39,10 +41,6 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.seyren.core.domain.Alert;
-import com.seyren.core.domain.Check;
-import com.seyren.core.domain.Subscription;
-import com.seyren.core.domain.SubscriptionType;
 import com.seyren.core.exception.NotificationFailedException;
 import com.seyren.core.util.config.SeyrenConfig;
 
@@ -104,6 +102,11 @@ public class SlackNotificationService implements NotificationService {
             HttpClientUtils.closeQuietly(client);
         }
 
+    }
+
+    @Override
+    public void sendNotification(Check check, Subscription subscription, Template template, List<Alert> alerts) throws NotificationFailedException {
+        throw new NotImplementedException();
     }
 
     @Override

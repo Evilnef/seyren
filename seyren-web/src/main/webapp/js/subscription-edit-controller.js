@@ -2,7 +2,7 @@
 (function () {
     'use strict';
 
-    seyrenApp.controller('SubscriptionEditModalController', function SubscriptionEditModalController($scope, $rootScope, Subscriptions, Seyren) {
+    seyrenApp.controller('SubscriptionEditModalController', function SubscriptionEditModalController($scope, $rootScope, Subscriptions, Seyren, Templates) {
         $scope.master = {
             target: null,
             hitsToNotify: 1,
@@ -23,7 +23,9 @@
             th: true,
             fr: true,
             sa: true,
-            enabled: true
+            enabled: true,
+            templateId: null,
+            templates: null
         };
 
         $('#editSubscriptionModal').on('shown', function () {
@@ -69,8 +71,15 @@
             $scope.subscription = angular.copy($scope.master);
         };
 
+        $scope.loadTemplates = function() {
+           Templates.query({}, function(data) {
+               $scope.templates = data;
+           });
+        };
+
         $rootScope.$on('subscription:edit', function () {
             var editSubscription = Seyren.subscriptionBeingEdited();
+            $scope.loadTemplates();
             if (editSubscription) {
                 $scope.newSubscription = false;
                 $scope.subscription = editSubscription;

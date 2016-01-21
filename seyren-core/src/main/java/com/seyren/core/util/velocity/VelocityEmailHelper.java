@@ -23,6 +23,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.seyren.core.domain.Template;
 import org.apache.commons.io.IOUtils;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -69,6 +70,11 @@ public class VelocityEmailHelper implements EmailHelper {
     public String createBody(Check check, Subscription subscription, List<Alert> alerts) {
         //return evaluateTemplate(check, subscription, alerts, TEMPLATE_CONTENT);
         return evaluateTemplate(check, subscription, alerts, getTemplateAsString(subscription.getMessageType().getPathToTemplate()));
+    }
+
+    @Override
+    public String createBody(Check check, Subscription subscription, Template template, List<Alert> alerts) {
+        return evaluateTemplate(check, subscription, alerts, template.getContent());
     }
 
     private String evaluateTemplate(Check check, Subscription subscription, List<Alert> alerts, String templateContent) {

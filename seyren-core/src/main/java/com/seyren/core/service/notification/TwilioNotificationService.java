@@ -20,7 +20,9 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.seyren.core.domain.*;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -35,11 +37,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.seyren.core.domain.Alert;
-import com.seyren.core.domain.AlertType;
-import com.seyren.core.domain.Check;
-import com.seyren.core.domain.Subscription;
-import com.seyren.core.domain.SubscriptionType;
 import com.seyren.core.exception.NotificationFailedException;
 import com.seyren.core.util.config.SeyrenConfig;
 
@@ -99,7 +96,12 @@ public class TwilioNotificationService implements NotificationService {
             HttpClientUtils.closeQuietly(client);
         }
     }
-    
+
+    @Override
+    public void sendNotification(Check check, Subscription subscription, Template template, List<Alert> alerts) throws NotificationFailedException {
+        throw new NotImplementedException();
+    }
+
     @Override
     public boolean canHandle(SubscriptionType subscriptionType) {
         return subscriptionType == SubscriptionType.TWILIO;

@@ -20,6 +20,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.seyren.core.domain.*;
+import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,11 +33,6 @@ import com.ifountain.opsgenie.client.model.alert.CreateAlertRequest;
 import com.ifountain.opsgenie.client.model.alert.CreateAlertResponse;
 import com.ifountain.opsgenie.client.model.alert.ListAlertsRequest;
 import com.ifountain.opsgenie.client.model.alert.ListAlertsResponse;
-import com.seyren.core.domain.Alert;
-import com.seyren.core.domain.AlertType;
-import com.seyren.core.domain.Check;
-import com.seyren.core.domain.Subscription;
-import com.seyren.core.domain.SubscriptionType;
 import com.seyren.core.exception.NotificationFailedException;
 import com.seyren.core.util.config.SeyrenConfig;
 
@@ -88,6 +85,11 @@ public class OpsGenieNotificationService implements NotificationService {
 
 		}
     }
+
+	@Override
+	public void sendNotification(Check check, Subscription subscription, Template template, List<Alert> alerts) throws NotificationFailedException {
+		throw new NotImplementedException();
+	}
 
 	private com.ifountain.opsgenie.client.model.beans.Alert findAlert(OpsGenieClient client, String apiKey, String message) throws OpsGenieClientException, IOException, ParseException {
 		ListAlertsRequest request = new ListAlertsRequest();

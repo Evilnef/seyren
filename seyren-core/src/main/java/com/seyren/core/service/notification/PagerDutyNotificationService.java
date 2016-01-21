@@ -19,17 +19,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.ImmutableMap;
-import com.seyren.core.domain.Alert;
-import com.seyren.core.domain.AlertType;
-import com.seyren.core.domain.Check;
-import com.seyren.core.domain.Subscription;
-import com.seyren.core.domain.SubscriptionType;
+import com.seyren.core.domain.*;
 import com.seyren.core.exception.NotificationFailedException;
 import com.seyren.core.util.config.SeyrenConfig;
 import com.squareup.pagerduty.incidents.NotifyResult;
 import com.squareup.pagerduty.incidents.PagerDuty;
 import com.squareup.pagerduty.incidents.Resolution;
 import com.squareup.pagerduty.incidents.Trigger;
+import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import retrofit.Endpoints;
@@ -90,6 +87,11 @@ public class PagerDutyNotificationService implements NotificationService {
         if (result != null && !"success".equals(result.status())) {
             throw new NotificationFailedException("Failed to send notification to PagerDuty: '" + result.status() + "', " + result.message());
         }
+    }
+
+    @Override
+    public void sendNotification(Check check, Subscription subscription, Template template, List<Alert> alerts) throws NotificationFailedException {
+        throw new NotImplementedException();
     }
 
     private Map<String, String> details(Check check, List<Alert> alerts) throws JsonProcessingException {

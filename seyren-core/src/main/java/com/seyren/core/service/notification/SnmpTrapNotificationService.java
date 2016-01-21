@@ -13,12 +13,10 @@
  */
 package com.seyren.core.service.notification;
 
-import com.seyren.core.domain.Alert;
-import com.seyren.core.domain.Check;
-import com.seyren.core.domain.Subscription;
-import com.seyren.core.domain.SubscriptionType;
+import com.seyren.core.domain.*;
 import com.seyren.core.exception.NotificationFailedException;
 import com.seyren.core.util.config.SeyrenConfig;
+import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.snmp4j.CommunityTarget;
@@ -100,6 +98,11 @@ public class SnmpTrapNotificationService implements NotificationService {
 
         // Cleanup
         closeSnmpConnection(snmp);
+    }
+
+    @Override
+    public void sendNotification(Check check, Subscription subscription, Template template, List<Alert> alerts) throws NotificationFailedException {
+        throw new NotImplementedException();
     }
 
     @Override

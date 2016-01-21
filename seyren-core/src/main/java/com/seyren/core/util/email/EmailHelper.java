@@ -18,11 +18,14 @@ import java.util.List;
 import com.seyren.core.domain.Alert;
 import com.seyren.core.domain.Check;
 import com.seyren.core.domain.Subscription;
+import com.seyren.core.domain.Template;
 
 public interface EmailHelper {
     
     String createSubject(Check check, Subscription subscription, List<Alert> alerts);
     
     String createBody(Check check, Subscription subscription, List<Alert> alerts);
+
+    String createBody(Check check, Subscription subscription, Template template, List<Alert> alerts);
     
 }

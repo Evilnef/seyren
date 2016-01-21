@@ -23,6 +23,7 @@ import javax.inject.Named;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableMap;
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,6 +96,11 @@ public class VictorOpsNotificationService implements NotificationService {
             post.releaseConnection();
             HttpClientUtils.closeQuietly(client);
         }
+    }
+
+    @Override
+    public void sendNotification(Check check, Subscription subscription, Template template, List<Alert> alerts) throws NotificationFailedException {
+        throw new NotImplementedException();
     }
 
     @Override

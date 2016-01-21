@@ -23,12 +23,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
 
+import com.seyren.core.domain.*;
 import org.springframework.mail.javamail.JavaMailSender;
 
-import com.seyren.core.domain.Alert;
-import com.seyren.core.domain.Check;
-import com.seyren.core.domain.Subscription;
-import com.seyren.core.domain.SubscriptionType;
 import com.seyren.core.exception.NotificationFailedException;
 import com.seyren.core.util.config.SeyrenConfig;
 import com.seyren.core.util.email.Email;
@@ -64,6 +61,22 @@ public class EmailNotificationService implements NotificationService {
             throw new NotificationFailedException("Failed to send notification to " + subscription.getTarget() + " from " + seyrenConfig.getSmtpFrom(), e);
         }
         
+    }
+
+    @Override
+    public void sendNotification(Check check, Subscription subscription, Template template, List<Alert> alerts) {
+        try {
+            Email email = new Email()
+                    .withTo(subscription.getTarget())
+                    .withFrom(seyrenConfig.getSmtpFrom())
+                    .withSubject(emailHelper.createSubject(check, subscription, alerts))
+                    .withMessage(emailHelper.createBody(check, subscription, template, alerts));
+
+            mailSender.send(createMimeMessage(email));
+
+        } catch (Exception e) {
+            throw new NotificationFailedException("Failed to send notification to " + subscription.getTarget() + " from " + seyrenConfig.getSmtpFrom(), e);
+        }
     }
     
     private MimeMessage createMimeMessage(Email email) throws AddressException, MessagingException {

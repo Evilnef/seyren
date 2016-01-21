@@ -19,15 +19,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.seyren.core.domain.*;
+import com.seyren.core.store.TemplatesStore;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
-import com.seyren.core.domain.Alert;
-import com.seyren.core.domain.AlertType;
-import com.seyren.core.domain.Check;
-import com.seyren.core.domain.Subscription;
 import com.seyren.core.service.checker.TargetChecker;
 import com.seyren.core.service.checker.ValueChecker;
 import com.seyren.core.service.notification.NotificationService;
@@ -41,15 +39,18 @@ public class CheckRunner implements Runnable {
     private final Check check;
     private final AlertsStore alertsStore;
     private final ChecksStore checksStore;
+    private final TemplatesStore templatesStore;
     private final TargetChecker targetChecker;
     private final ValueChecker valueChecker;
     private final Iterable<NotificationService> notificationServices;
 
-    public CheckRunner(Check check, AlertsStore alertsStore, ChecksStore checksStore, TargetChecker targetChecker, ValueChecker valueChecker,
+    public CheckRunner(Check check, AlertsStore alertsStore, ChecksStore checksStore, TemplatesStore templatesStore,
+                       TargetChecker targetChecker, ValueChecker valueChecker,
                        Iterable<NotificationService> notificationServices) {
         this.check = check;
         this.alertsStore = alertsStore;
         this.checksStore = checksStore;
+        this.templatesStore = templatesStore;
         this.targetChecker = targetChecker;
         this.valueChecker = valueChecker;
         this.notificationServices = notificationServices;
@@ -85,7 +86,7 @@ public class CheckRunner implements Runnable {
                 worstState = AlertType.UNKNOWN;
             }
 
-            List<Alert> interestingAlerts = new ArrayList<Alert>();
+            List<Alert> interestingAlerts = new ArrayList<>();
 
             for (Entry<String, Optional<BigDecimal>> entry : targetValues.entrySet()) {
 
@@ -152,7 +153,8 @@ public class CheckRunner implements Runnable {
                 for (NotificationService notificationService : notificationServices) {
                     if (notificationService.canHandle(subscription.getType())) {
                         try {
-                            notificationService.sendNotification(updatedCheck, subscription, interestingAlerts);
+                            Template template = templatesStore.getTemplate(subscription.getTemplateId());
+                            notificationService.sendNotification(updatedCheck, subscription, template, interestingAlerts);
                         } catch (Exception e) {
                             LOGGER.warn("Notifying {} by {} failed.", subscription.getTarget(), subscription.getType(), e);
                         }

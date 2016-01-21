@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.seyren.core.store.TemplatesStore;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,6 +47,7 @@ public class CheckRunnerTest {
     private Check mockCheck;
     private AlertsStore mockAlertsStore;
     private ChecksStore mockChecksStore;
+    private TemplatesStore mockTemplateStore;
     private TargetChecker mockTargetChecker;
     private ValueChecker mockValueChecker;
     private NotificationService mockNotificationService;
@@ -57,6 +59,7 @@ public class CheckRunnerTest {
         mockCheck = mock(Check.class);
         mockAlertsStore = mock(AlertsStore.class);
         mockChecksStore = mock(ChecksStore.class);
+        mockTemplateStore = mock(TemplatesStore.class);
         mockTargetChecker = mock(TargetChecker.class);
         mockValueChecker = mock(ValueChecker.class);
         mockNotificationService = mock(NotificationService.class);
@@ -65,6 +68,7 @@ public class CheckRunnerTest {
                 mockCheck,
                 mockAlertsStore,
                 mockChecksStore,
+                mockTemplateStore,
                 mockTargetChecker,
                 mockValueChecker,
                 mockNotificationServices);
