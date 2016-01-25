@@ -2,7 +2,7 @@
 (function () {
     'use strict';
 
-    seyrenApp.controller('SubscriptionEditModalController', function SubscriptionEditModalController($scope, $rootScope, Subscriptions, Seyren, Templates) {
+    seyrenApp.controller('TemplateEditModalController', function TemplateEditModalController($scope, $rootScope, Subscriptions, Seyren, Templates) {
         $scope.master = {
             target: null,
             hitsToNotify: 1,

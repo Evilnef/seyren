@@ -115,6 +115,9 @@
         $scope.$on('subscription:created', function () {
             $scope.loadCheck();
         });
+        $scope.$on('template:created', function () {
+            $scope.loadCheck();
+        });
 
         $scope.$on('subscription:updated', function () {
             $scope.loadCheck();
