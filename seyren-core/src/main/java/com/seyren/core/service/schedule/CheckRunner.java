@@ -60,7 +60,7 @@ public class CheckRunner implements Runnable {
     public final void run() {
         long timeSinceLastCheck;
         if (check.getLastCheck() == null) {
-            timeSinceLastCheck = check.getPollingInterval().longValue();
+            timeSinceLastCheck = 0;
         }
         else {
             timeSinceLastCheck = DateTime.now().minus(check.getLastCheck().getMillis()).getMillis();

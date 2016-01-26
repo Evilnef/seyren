@@ -2,36 +2,38 @@
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h3 class="modal-title"><strong>Add template</strong></h3>
+            <h3 class="modal-title"><strong>New template</strong></h3>
         </div>
         <div class="modal-body">
-            <form name="checkSubscription" class="form-horizontal" role="form" novalidate>
+            <form name="checkSubscription" class="form-horizontal" role="form">
                 <fieldset>
                     <div ng-class="{ 'form-group': true, 'has-error': checkSubscription['template.name'].$invalid }">
                         <label class="col-sm-3 control-label" for="template.name">Name</label>
                         <div class="col-sm-7">
                             <input id="template.name" class="form-control" name="template.name"
+                                   ng-change="onNameChange()"
                                    ng-model="template.name" type="text" required/>
                         </div>
                     </div>
                     <div ng-class="{ 'form-group': true, 'has-error': checkSubscription['template.content'].$invalid }">
                         <label class="col-sm-3 control-label" for="template.content">Content</label>
                         <div class="col-sm-7">
-                            <input id="template.content" class="form-control" name="template.content"
-                                   ng-model="template.content" type="text" required/>
+                            <textarea id="template.content" class="form-control" name="template.content"
+                                      ng-model="template.content" type="text" rows="10" cols="45" required></textarea>
                         </div>
                     </div>
                 </fieldset>
+                <div class="modal-footer">
+                    <button type="button" class="btn pull-left" data-dismiss="modal" id="cancelSubscriptionButton"
+                            ng-click="reset()"><i class="glyphicon glyphicon-remove"></i>&nbsp;&nbsp;Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="createTemplateButton"
+                            ng-disabled="isValid"
+                            ng-click="create()"><i
+                            class="glyphicon glyphicon-ok glyphicon-white"></i>&nbsp;&nbsp;Add
+                    </button>
+                </div>
             </form>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn pull-left" data-dismiss="modal" id="cancelSubscriptionButton"
-                    ng-click="reset()"><i class="glyphicon glyphicon-remove"></i>&nbsp;&nbsp;Cancel
-            </button>
-            <button type="submit" class="btn btn-primary" id="createTemplateButton"
-                    ng-click="create()"><i
-                    class="glyphicon glyphicon-ok glyphicon-white"></i>&nbsp;&nbsp;Add
-            </button>
         </div>
     </div>
 </div>

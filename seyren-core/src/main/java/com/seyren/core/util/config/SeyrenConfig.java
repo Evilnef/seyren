@@ -163,8 +163,7 @@ public class SeyrenConfig {
         this.victorOpsRestAPIEndpoint = configOrDefault("VICTOROPS_REST_ENDPOINT", "");
 
         // Template
-        //this.emailTemplateFileName = configOrDefault("TEMPLATE_EMAIL_FILE_PATH","com/seyren/core/service/notification/email-template.vm");
-        this.emailTemplateFileName = configOrDefault("TEMPLATE_EMAIL_FILE_PATH","com/seyren/core/service/notification/licenceServerUnavailableTemplate.vm");
+        this.emailTemplateFileName = configOrDefault("TEMPLATE_EMAIL_FILE_PATH","com/seyren/core/service/notification/email-template.vm");
         this.emailSubjectTemplateFileName = configOrDefault("TEMPLATE_EMAIL_SUBJECT_FILE_PATH","com/seyren/core/service/notification/email-subject-template.vm");
     }
     

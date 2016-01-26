@@ -94,19 +94,19 @@ public class MongoStore implements ChecksStore, AlertsStore, SubscriptionsStore,
         getAlertsCollection().createIndex(new BasicDBObject("timestamp", -1));
         getAlertsCollection().createIndex(new BasicDBObject("checkId", 1).append("targetHash", 1));
 
-        getTemplateCollection().createIndex(new BasicDBObject("name", 1), new BasicDBObject("unique", true));
+        getTemplateCollection().createIndex(new BasicDBObject("templateName", 1), new BasicDBObject("unique", true));
     }
 
     private void removeOldIndices() {
         LOGGER.info("Dropping old indices");
-        try {
+        /*try {
             getAlertsCollection().dropIndex(new BasicDBObject("checkId", 1).append("target", 1));
         } catch (CommandFailureException e) {
             if (e.getCode() != -5) {
                 // -5 is the code which appears when the index doesn't exist (which we're happy with, anything else is bad news) 
                 throw e;
             }
-        }
+        }*/
     }
 
     private void addTargetHashToAlerts() {

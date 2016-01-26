@@ -3,60 +3,38 @@
     'use strict';
 
     seyrenApp.controller('TemplateEditModalController', function TemplateEditModalController($scope, $rootScope, Seyren, Templates) {
-        $scope.master = {
-            target: null,
-            hitsToNotify: 1,
-            type: "EMAIL",
-            messageType: "DEFAULT",
-            ignoreWarn: false,
-            ignoreError: false,
-            ignoreOk: false,
-            notifyOnWarn: true,
-            notifyOnError: true,
-            notifyOnOk: true,
-            fromTime: "0000",
-            toTime: "2359",
-            su: true,
-            mo: true,
-            tu: true,
-            we: true,
-            th: true,
-            fr: true,
-            sa: true,
-            enabled: true,
-            templateId: null
-        };
+        $scope.isValid = false;
 
         $('#editSubscriptionModal').on('shown', function () {
-            $('#subscription\\.target').focus();
+            $('#template\\.name').focus();
         });
 
-        /*$scope.create = function () {
-            $("#createSubscriptionButton").addClass("disabled");
-            Subscriptions.create({checkId: $scope.check.id}, $scope.subscription, function () {
-                $("#createSubscriptionButton").removeClass("disabled");
-                $("#editSubscriptionModal").modal("hide");
-                $scope.$emit('subscription:created');
-            }, function () {
-                $("#createSubscriptionButton").removeClass("disabled");
-                console.log('Create subscription failed');
-            });
-        };*/
-
         $scope.create = function () {
-            $("#createSubscriptionButton").addClass("disabled");
+            $("#createTemplateButton").addClass("disabled");
+            $scope.template.content = $scope.template.content.replace(/(\r\n|\n|\r)/gm,"");
             Templates.create($scope.template, function () {
-                $("#createSubscriptionButton").removeClass("disabled");
-                $("#editSubscriptionModal").modal("hide");
-                $scope.$emit('subscription:created');
+                $("#createTemplateButton").removeClass("disabled");
+                $("#editTemplateModal").modal("hide");
+                $scope.$emit('template:created');
             }, function () {
-                $("#createSubscriptionButton").removeClass("disabled");
-                console.log('Create subscription failed');
+                $("#createTemplateButton").removeClass("disabled");
+                console.log('Create template failed');
             });
         };
 
-        $scope.reset = function () {
-            $scope.subscription = angular.copy($scope.master);
+        $scope.checkName = function () {
+            $scope.loadTemplates();
+            if ($scope.templates !== null && $scope.templates !== undefined) {
+                return $scope.templates.values.some(function (tmp) {
+                    return tmp.name === $scope.template.name;
+                });
+            } else {
+                return false;
+            }
+        };
+
+        $scope.onNameChanged = function () {
+            $scope.isValid = $scope.checkName();
         };
 
         $scope.loadTemplates = function () {
@@ -66,22 +44,12 @@
             });
         };
 
-        $rootScope.$on('subscription:edit', function () {
+        $rootScope.$on('template:edit', function () {
+            $scope.template = {};
             $scope.template.name = null;
             $scope.template.content = null;
-            var editSubscription = Seyren.subscriptionBeingEdited();
             $scope.loadTemplates();
-            if (editSubscription) {
-                $scope.newSubscription = false;
-                $scope.subscription = editSubscription;
-                $scope.subscription.notifyOnWarn = !$scope.subscription.ignoreWarn;
-                $scope.subscription.notifyOnError = !$scope.subscription.ignoreError;
-                $scope.subscription.notifyOnOk = !$scope.subscription.ignoreOk;
-            } else {
-                $scope.newSubscription = true;
-                $scope.subscription = {};
-                $scope.reset();
-            }
+            console.log('Saving template failed');
         });
     });
 

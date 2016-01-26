@@ -159,6 +159,10 @@
             Seyren.editSubscription(check, subscription);
         };
 
+        $scope.editTemplate = function () {
+            Seyren.editTemplate();
+        };
+
         $scope.deleteSubscription = function (check, subscription) {
             Subscriptions.remove({checkId: check.id, subscriptionId: subscription.id}, subscription, function () {
                 $scope.loadCheck();
