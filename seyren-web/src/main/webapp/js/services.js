@@ -143,9 +143,10 @@
             }
         };
     }).
-    factory('Seyren', function ($rootScope, Checks, Subscriptions) {
+    factory('Seyren', function ($rootScope, Checks, Subscriptions, Templates) {
         var checkBeingEdited = null,
-            subscriptionBeingEdited = null;
+            subscriptionBeingEdited = null,
+            templateBeingEdited = null;
         return {
             editCheck: function (check) {
                 if (check === 'new') {
@@ -170,6 +171,13 @@
             },
             subscriptionBeingEdited: function () {
                 return subscriptionBeingEdited;
+            },
+            editTemplate: function () {
+                templateBeingEdited = null;
+                $rootScope.$broadcast('template:edit');
+            },
+            templateBeingEdited: function () {
+                return templateBeingEdited;
             },
             swapCheckEnabled: function (check) {
                 check.enabled = !check.enabled;

@@ -2,7 +2,7 @@
 (function () {
     'use strict';
 
-    seyrenApp.controller('TemplateEditModalController', function TemplateEditModalController($scope, $rootScope, Subscriptions, Seyren, Templates) {
+    seyrenApp.controller('TemplateEditModalController', function TemplateEditModalController($scope, $rootScope, Seyren, Templates) {
         $scope.master = {
             target: null,
             hitsToNotify: 1,
@@ -31,19 +31,7 @@
             $('#subscription\\.target').focus();
         });
 
-        $scope.notifyOnWarnClicked = function () {
-            $scope.subscription.ignoreWarn = !$scope.subscription.notifyOnWarn;
-        };
-
-        $scope.notifyOnErrorClicked = function () {
-            $scope.subscription.ignoreError = !$scope.subscription.notifyOnError;
-        };
-
-        $scope.notifyOnOkClicked = function () {
-            $scope.subscription.ignoreOk = !$scope.subscription.notifyOnOk;
-        };
-
-        $scope.create = function () {
+        /*$scope.create = function () {
             $("#createSubscriptionButton").addClass("disabled");
             Subscriptions.create({checkId: $scope.check.id}, $scope.subscription, function () {
                 $("#createSubscriptionButton").removeClass("disabled");
@@ -53,20 +41,17 @@
                 $("#createSubscriptionButton").removeClass("disabled");
                 console.log('Create subscription failed');
             });
-        };
+        };*/
 
-        $scope.update = function () {
-            $("#updateSubscriptionButton").addClass("disabled");
-            $scope.subscription.templateId = $scope.currentTemplate.id;
-            Subscriptions.update({
-                checkId: $scope.check.id,
-                subscriptionId: $scope.subscription.id
-            }, $scope.subscription, function () {
-                $("#updateSubscriptionButton").removeClass("disabled");
+        $scope.create = function () {
+            $("#createSubscriptionButton").addClass("disabled");
+            Templates.create($scope.template, function () {
+                $("#createSubscriptionButton").removeClass("disabled");
                 $("#editSubscriptionModal").modal("hide");
-                $scope.$emit('subscription:updated');
+                $scope.$emit('subscription:created');
             }, function () {
-                console.log('Saving subscription failed');
+                $("#createSubscriptionButton").removeClass("disabled");
+                console.log('Create subscription failed');
             });
         };
 
@@ -82,6 +67,8 @@
         };
 
         $rootScope.$on('subscription:edit', function () {
+            $scope.template.name = null;
+            $scope.template.content = null;
             var editSubscription = Seyren.subscriptionBeingEdited();
             $scope.loadTemplates();
             if (editSubscription) {
