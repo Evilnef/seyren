@@ -1,4 +1,4 @@
-<div class="modal-dialog" ng-controller="TemplateEditModalController" style="width: 1024px;height: 800px">
+<div class="modal-dialog" ng-controller="TemplateEditModalController" style="width: 1024px;height: 1024px">
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -28,17 +28,17 @@
                     </table>
                 </div>
                 <fieldset>
-                    <div ng-class="{ 'form-group': true, 'has-error': checkSubscription['template.name'].$invalid }">
-                        <label class="col-sm-3 control-label" for="template.name">Name</label>
-                        <div class="col-sm-7">
+                    <div ng-class="{ 'form-group': true, 'has-error': checkSubscription['template.name'].$invalid }" style="margin: 0px">
+                        <label class="control-label" for="template.name">Name</label>
+                        <div>
                             <input id="template.name" class="form-control" name="template.name"
                                    ng-change="onNameChanged()"
                                    ng-model="template.name" type="text" required/>
                         </div>
                     </div>
-                    <div ng-class="{ 'form-group': true, 'has-error': checkSubscription['template.content'].$invalid }">
-                        <label class="col-sm-3 control-label" for="template.content">Content</label>
-                        <div class="col-sm-7">
+                    <div ng-class="{ 'form-group': true, 'has-error': checkSubscription['template.content'].$invalid }" style="margin: 0px">
+                        <label class="control-label" for="template.content">Content</label>
+                        <div>
                             <textarea id="template.content" class="form-control" name="template.content"
                                       ng-model="template.content" type="text" rows="10" cols="45" required></textarea>
                         </div>

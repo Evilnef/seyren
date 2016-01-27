@@ -25,6 +25,9 @@
         $scope.deleteTemplate = function (id) {
             Templates.remove({templateId: id} ,function () {
                 console.log('Delete template successful');
+                $scope.template.name = "";
+                $scope.template.content = "";
+                $scope.loadTemplates();
             }, function () {
                 console.log('Delete template failed');
             });
