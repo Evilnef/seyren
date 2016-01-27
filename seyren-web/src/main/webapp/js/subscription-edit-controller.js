@@ -77,7 +77,10 @@
         $scope.loadTemplates = function () {
             Templates.query({}, function (data) {
                 $scope.templates = data;
-                $scope.currentTemplate = data.values[0];
+                var temp = data.values.filter(function (template) {
+                    return template.id === $scope.subscription.templateId;
+                })[0];
+                $scope.currentTemplate = temp;
             });
         };
 
