@@ -77,11 +77,16 @@
         $scope.loadTemplates = function () {
             Templates.query({}, function (data) {
                 $scope.templates = data;
-                var temp = data.values.filter(function (template) {
+                $scope.currentTemplate = data.values.filter(function (template) {
                     return template.id === $scope.subscription.templateId;
                 })[0];
-                $scope.currentTemplate = temp;
             });
+        };
+
+        $scope.selectCurrentTemplate = function() {
+            $scope.currentTemplate = $scope.templates.values.filter(function (template) {
+                return template.id === $scope.subscription.templateId;
+            })[0];
         };
 
         $rootScope.$on('subscription:edit', function () {
@@ -90,6 +95,7 @@
             if (editSubscription) {
                 $scope.newSubscription = false;
                 $scope.subscription = editSubscription;
+                $scope.selectCurrentTemplate();
                 $scope.subscription.notifyOnWarn = !$scope.subscription.ignoreWarn;
                 $scope.subscription.notifyOnError = !$scope.subscription.ignoreError;
                 $scope.subscription.notifyOnOk = !$scope.subscription.ignoreOk;

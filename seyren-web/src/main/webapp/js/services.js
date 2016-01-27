@@ -68,7 +68,7 @@
             'query': {method: 'GET', isArray: false},
             'get': {method: 'GET'},
             'create': {method: 'POST'},
-            'delete': {method: 'DELETE'}
+            'remove': {method: 'DELETE'}
         });
     }).
     factory('Graph', function ($resource) {

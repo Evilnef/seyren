@@ -99,14 +99,15 @@ public class MongoStore implements ChecksStore, AlertsStore, SubscriptionsStore,
 
     private void removeOldIndices() {
         LOGGER.info("Dropping old indices");
-        /*try {
+        try {
             getAlertsCollection().dropIndex(new BasicDBObject("checkId", 1).append("target", 1));
         } catch (CommandFailureException e) {
-            if (e.getCode() != -5) {
-                // -5 is the code which appears when the index doesn't exist (which we're happy with, anything else is bad news) 
+            /*if (e.getCode() != -5) {
+                // -5 is the code which appears when the index doesn't exist (which we're happy with, anything else is bad news)
                 throw e;
-            }
-        }*/
+            }*/
+            System.out.println(e.getMessage());
+        }
     }
 
     private void addTargetHashToAlerts() {

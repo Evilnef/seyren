@@ -1,4 +1,4 @@
-<div class="modal-dialog" ng-controller="TemplateEditModalController">
+<div class="modal-dialog" ng-controller="TemplateEditModalController" style="width: 1024px;height: 800px">
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -6,6 +6,27 @@
         </div>
         <div class="modal-body">
             <form name="checkSubscription" class="form-horizontal" role="form">
+                <div>
+                    <table class="table table-bordered table-striped table-hover" ng-show="templates.values.length > 0">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="temp in templates.values" ng-click="selectTemplate(temp.id)"
+                            style="cursor: pointer;">
+                            <td title="{{ temp.name }}">{{ temp.name }}</td>
+                            <td>
+                                <button type="submit" class="btn btn-danger btn-xs"
+                                        ng-click="deleteTemplate(temp.id)">Delete
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <fieldset>
                     <div ng-class="{ 'form-group': true, 'has-error': checkSubscription['template.name'].$invalid }">
                         <label class="col-sm-3 control-label" for="template.name">Name</label>
@@ -28,9 +49,14 @@
                             ng-click="reset()"><i class="glyphicon glyphicon-remove"></i>&nbsp;&nbsp;Cancel
                     </button>
                     <button type="submit" class="btn btn-primary" id="createTemplateButton"
-                            ng-disabled="isValid"
+                            ng-hide="isAlreadyExists"
                             ng-click="create()"><i
                             class="glyphicon glyphicon-ok glyphicon-white"></i>&nbsp;&nbsp;Add
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="updateTemplateButton"
+                            ng-show="isAlreadyExists"
+                            ng-click="create()"><i
+                            class="glyphicon glyphicon-ok glyphicon-white"></i>&nbsp;&nbsp;Save
                     </button>
                 </div>
             </form>
