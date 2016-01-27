@@ -94,7 +94,7 @@ public class MongoStore implements ChecksStore, AlertsStore, SubscriptionsStore,
         getAlertsCollection().createIndex(new BasicDBObject("timestamp", -1));
         getAlertsCollection().createIndex(new BasicDBObject("checkId", 1).append("targetHash", 1));
 
-        getTemplateCollection().createIndex(new BasicDBObject("templateName", 1), new BasicDBObject("unique", true));
+        getTemplateCollection().createIndex(new BasicDBObject("name", 1), new BasicDBObject("unique", true));
     }
 
     private void removeOldIndices() {
