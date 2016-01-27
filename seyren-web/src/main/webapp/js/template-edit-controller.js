@@ -33,6 +33,10 @@
             }
         };
 
+        $scope.$watch("template.name", function () {
+            $scope.isValid = $scope.checkName();
+        });
+
         $scope.onNameChanged = function () {
             $scope.isValid = $scope.checkName();
         };
