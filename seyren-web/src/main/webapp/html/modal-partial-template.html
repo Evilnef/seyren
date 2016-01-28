@@ -1,12 +1,12 @@
-<div class="modal-dialog" ng-controller="TemplateEditModalController" style="width: 1024px;height: 1024px">
-    <div class="modal-content">
+<div class="modal-dialog" ng-controller="TemplateEditModalController" style="width: 1024px;">
+    <div class="modal-content" style="height: 650px;">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h3 class="modal-title"><strong>New template</strong></h3>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" style="height: 600px;max-height: 600px">
             <form name="checkSubscription" class="form-horizontal" role="form">
-                <div>
+                <div style="overflow-y: scroll; height:200px;">
                     <table class="table table-bordered table-striped table-hover" ng-show="templates.values.length > 0">
                         <thead>
                         <tr>

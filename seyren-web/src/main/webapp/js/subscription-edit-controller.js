@@ -45,6 +45,7 @@
 
         $scope.create = function () {
             $("#createSubscriptionButton").addClass("disabled");
+            $scope.subscription.templateId = $scope.currentTemplate.id;
             Subscriptions.create({checkId: $scope.check.id}, $scope.subscription, function () {
                 $("#createSubscriptionButton").removeClass("disabled");
                 $("#editSubscriptionModal").modal("hide");
@@ -100,6 +101,7 @@
                 $scope.subscription.notifyOnError = !$scope.subscription.ignoreError;
                 $scope.subscription.notifyOnOk = !$scope.subscription.ignoreOk;
             } else {
+                $scope.currentTemplate = {};
                 $scope.newSubscription = true;
                 $scope.subscription = {};
                 $scope.reset();

@@ -72,7 +72,13 @@ public class VelocityEmailHelper implements EmailHelper {
 
     @Override
     public String createBody(Check check, Subscription subscription, Template template, List<Alert> alerts) {
-        return evaluateTemplate(check, subscription, alerts, template.getContent());
+        String content;
+        try {
+            content = template.getContent();
+        } catch (NullPointerException ex) {
+            content = TEMPLATE_CONTENT;
+        }
+        return evaluateTemplate(check, subscription, alerts, content);
     }
 
     private String evaluateTemplate(Check check, Subscription subscription, List<Alert> alerts, String templateContent) {
