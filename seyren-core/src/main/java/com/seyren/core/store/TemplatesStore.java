@@ -15,4 +15,6 @@ public interface TemplatesStore {
     SeyrenResponse<Template> getTemplates();
 
     Template getTemplate(String templateId);
+
+    Template updateTemplate(Template template);
 }

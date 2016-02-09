@@ -32,8 +32,9 @@
                         <label class="control-label" for="template.name">Name</label>
                         <div>
                             <input id="template.name" class="form-control" name="template.name"
-                                   ng-change="onNameChanged()"
                                    ng-model="template.name" type="text" required/>
+                                   <!--ng-change="onNameChanged()"-->
+
                         </div>
                     </div>
                     <div ng-class="{ 'form-group': true, 'has-error': checkSubscription['template.content'].$invalid }" style="margin: 0px">
@@ -55,7 +56,7 @@
                     </button>
                     <button type="submit" class="btn btn-primary" id="updateTemplateButton"
                             ng-show="isAlreadyExists"
-                            ng-click="create()"><i
+                            ng-click="update()"><i
                             class="glyphicon glyphicon-ok glyphicon-white"></i>&nbsp;&nbsp;Save
                     </button>
                 </div>

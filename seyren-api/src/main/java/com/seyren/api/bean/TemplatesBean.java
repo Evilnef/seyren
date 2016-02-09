@@ -51,6 +51,17 @@ public class TemplatesBean implements TemplatesResources {
         return Response.noContent().build();
     }
 
+    @Override
+    public Response updateTemplate(String templateId, Template template) {
+        Template stored = templatesStore.getTemplate(templateId);
+        if (stored == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        stored = templatesStore.updateTemplate(template);
+
+        return Response.ok(stored).build();
+    }
+
     private URI uri(String templateId) {
         try {
             return new URI("templates/" + templateId);

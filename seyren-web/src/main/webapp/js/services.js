@@ -68,7 +68,8 @@
             'query': {method: 'GET', isArray: false},
             'get': {method: 'GET'},
             'create': {method: 'POST'},
-            'remove': {method: 'DELETE'}
+            'remove': {method: 'DELETE'},
+            'update': {method: 'PUT'}
         });
     }).
     factory('Graph', function ($resource) {
@@ -213,9 +214,6 @@
                 }, function (err) {
                     console.log('Saving check failed');
                 });
-            },
-            mytest: function() {
-
             }
         };
     });

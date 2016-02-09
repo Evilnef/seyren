@@ -22,6 +22,19 @@
             });
         };
 
+        $scope.update = function () {
+            $("#createTemplateButton").addClass("disabled");
+            $scope.template.content = $scope.template.content.replace(/(\r\n|\n|\r)/gm,"");
+            Templates.update({templateId: $scope.template.id}, $scope.template, function () {
+                $("#createTemplateButton").removeClass("disabled");
+                $("#editTemplateModal").modal("hide");
+                $scope.$emit('template:updated');
+            }, function () {
+                $("#createTemplateButton").removeClass("disabled");
+                console.log('Create template failed');
+            });
+        };
+
         $scope.deleteTemplate = function (id) {
             Templates.remove({templateId: id} ,function () {
                 console.log('Delete template successful');
@@ -33,7 +46,7 @@
             });
         };
 
-        $scope.checkName = function () {
+        $scope.isNameExist = function () {
             $scope.loadTemplates();
             if ($scope.templates !== null && $scope.templates !== undefined) {
                 return $scope.templates.values.some(function (tmp) {
@@ -45,11 +58,11 @@
         };
 
         $scope.$watch("template.name", function () {
-            $scope.isAlreadyExists = $scope.checkName();
+            $scope.isAlreadyExists = $scope.isNameExist();
         });
 
         $scope.onNameChanged = function () {
-            $scope.isAlreadyExists = $scope.checkName();
+            $scope.isAlreadyExists = $scope.isNameExist();
         };
 
         $scope.loadTemplates = function () {

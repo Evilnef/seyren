@@ -391,4 +391,13 @@ public class MongoStore implements ChecksStore, AlertsStore, SubscriptionsStore,
             return null;
         return mapper.templateFrom(dbo);
     }
+
+    @Override
+    public Template updateTemplate(Template template) {
+        DBObject templateObject = mapper.templateToDBObject(template);
+        DBObject findObject = forId(template.getId());
+        DBObject setObject = object("$set", templateObject);
+        getTemplateCollection().update(findObject, setObject);
+        return template;
+    }
 }

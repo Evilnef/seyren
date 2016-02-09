@@ -30,4 +30,10 @@ public interface TemplatesResources {
     @DELETE
     @Path("/templates/{templateId}")
     Response deleteTemplate(@PathParam("templateId") String templateId);
+
+    @PUT
+    @Path("/templates/{templateId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    Response updateTemplate(@PathParam("templateId") String templateId, Template template);
 }

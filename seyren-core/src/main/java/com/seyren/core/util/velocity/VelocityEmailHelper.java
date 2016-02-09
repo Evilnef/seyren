@@ -18,7 +18,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URL;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -33,6 +34,7 @@ import com.seyren.core.domain.Check;
 import com.seyren.core.domain.Subscription;
 import com.seyren.core.util.config.SeyrenConfig;
 import com.seyren.core.util.email.EmailHelper;
+import org.apache.velocity.tools.generic.DateTool;
 
 @Named
 public class VelocityEmailHelper implements EmailHelper {
@@ -89,10 +91,13 @@ public class VelocityEmailHelper implements EmailHelper {
     }
     
     private VelocityContext createVelocityContext(Check check, Subscription subscription, List<Alert> alerts) {
+        byte timeOffset = 1;
         VelocityContext result = new VelocityContext();
         result.put("CHECK", check);
         result.put("ALERTS", alerts);
         result.put("SEYREN_URL", seyrenConfig.getBaseUrl());
+        result.put("date",new DateTool());
+        result.put("timeoffset", TimeUnit.HOURS.toMillis(timeOffset));
         return result;
     }
     
