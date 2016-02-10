@@ -1,3 +1,12 @@
+[Seyren](https://github.com/scobal/seyren) project clone.
+#### What's New:
+* Support for custom templates and the ability to work with them from the web interface.
+* Ability to set individual pooling interval for each check.
+* Ability to set the number of triggered alerts before sending the notification.
+
+#### TODO:
+* Support for getting data via http request.
+
 <img src="http://i.imgur.com/Ae5gQJZ.png" height="45" width="200" />
 
 Seyren ([/ˈsaɪ.rʌn/](http://en.wikipedia.org/wiki/Wikipedia:IPA_for_English#Key)) is an alerting dashboard for Graphite. It supports the following notification channels:
