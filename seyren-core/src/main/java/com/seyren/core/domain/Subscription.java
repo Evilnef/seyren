@@ -319,7 +319,7 @@ public class Subscription {
             return false;
         }
 
-        if ((alertType == AlertType.ERROR || alertType == AlertType.WARN) && !streak.equals(hitsToNotify)) {
+        if (!streak.equals(hitsToNotify)) {
             return false;
         }
 

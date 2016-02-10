@@ -133,7 +133,7 @@ public class CheckRunner implements Runnable {
                 }
                 alertsStore.createAlert(check.getId(), alert);
 
-                if (stateIsTheSame(lastState, currentState) && currentState == AlertType.OK) {
+                if (isStillOk(lastState, currentState)) {
                     continue;
                 }
 
